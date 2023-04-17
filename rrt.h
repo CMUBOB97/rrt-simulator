@@ -3,6 +3,7 @@
 
 #include "obstacles.h"
 #include <stdlib.h>
+#include <cilk/cilk.h>
 #include <vector>
 #include <math.h>
 
