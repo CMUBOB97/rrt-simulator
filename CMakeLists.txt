@@ -6,7 +6,9 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 set(CMAKE_CXX_FLAGS "-march=native -O3 -Wall")
+set(THREADS_PREFER_PTHREAD_FLAG ON)
 
+find_package(Threads REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Gui REQUIRED)
@@ -25,3 +27,4 @@ include_directories(
 
 add_executable(rrt-test main.cpp mainwindow.cpp obstacles.cpp renderarea.cpp rrt.cpp)
 target_link_libraries(rrt-test Qt5::Widgets Qt5::Gui)
+target_link_libraries(rrt-test PRIVATE Threads::Threads)

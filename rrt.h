@@ -26,6 +26,7 @@ public:
     int distance(Vector2f &p, Vector2f &q);
     Vector2f newConfig(Node *q, Node *qNearest);
     void add(Node *qNearest, Node *qNew);
+    void modify_start_goal(float start_x, float start_y, float goal_x, float goal_y, Obstacles *obs);
     bool reached();
     void setStepSize(int step);
     void setMaxIterations(int iter);

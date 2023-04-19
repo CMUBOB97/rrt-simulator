@@ -2,8 +2,22 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <cilk/cilk.h>
+#include <pthread.h>
 #include "renderarea.h"
 #include "rrt.h"
+
+#define MAX_THREADS 2
+
+typedef struct {
+    float start_x, start_y;
+    float goal_x, goal_y;
+    int max_iterations, step_size;
+    bool path_found;
+    RenderArea *renderer;
+    Obstacles *obstacles;
+    vector<Node *> nodes;
+} ThreadArgs;
 
 namespace Ui {
 class MainWindow;

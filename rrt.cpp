@@ -29,6 +29,18 @@ void RRT::initialize()
 }
 
 /**
+ * @brief Modify the tree node for parallel version
+ */
+void RRT::modify_start_goal(float start_x, float start_y, float goal_x, float goal_y, Obstacles *obs)
+{
+    startPos.x() = start_x;
+    startPos.y() = start_y;
+    endPos.x() = goal_x;
+    endPos.y() = goal_y;
+    obstacles = obs;
+}
+
+/**
  * @brief Generate a random node in the field.
  * @return
  */
