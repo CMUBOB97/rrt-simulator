@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <stdio.h>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -12,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 // select sub start and goal pairs
-void thread_set_args(int ThreadID, int MaxIter, int StepSize, ThreadArgs *ThreadArg, RenderArea *rendertool, Obstacles *obs_pointer) {
+void thread_set_args(int ThreadID, int MaxIter, int StepSize, ThreadArgs *ThreadArg, Obstacles *obs_pointer) {
     // when thread id is 0, start is global start
     if (ThreadID == 0) {
         ThreadArg->start_x = START_POS_X;
@@ -32,7 +33,6 @@ void thread_set_args(int ThreadID, int MaxIter, int StepSize, ThreadArgs *Thread
     ThreadArg->max_iterations = (int) MaxIter / MAX_THREADS;
     ThreadArg->step_size = StepSize;
     ThreadArg->path_found = false;
-    ThreadArg->renderer = rendertool;
     ThreadArg->obstacles = obs_pointer;
 }
 
@@ -45,7 +45,7 @@ void *thread_start(void *VoidThreadArg) {
                                  ThreadArg->goal_x, ThreadArg->goal_y, ThreadArg->obstacles);
     thread_rrt.initialize();
     thread_rrt.setMaxIterations(ThreadArg->max_iterations);
-    RenderArea *renderTool = ThreadArg->renderer;
+    thread_rrt.setStepSize(ThreadArg->step_size);
     for(int i = 0; i < ThreadArg->max_iterations; i++) {
         Node *q = thread_rrt.getRandomNode();
         if (q) {
@@ -60,6 +60,7 @@ void *thread_start(void *VoidThreadArg) {
             }
         }
         if (thread_rrt.reached()) {
+            ThreadArg->path_found = true;
             break;
         }
     }
@@ -107,8 +108,12 @@ void MainWindow::on_startButton_clicked()
 
     // use pthreads to create substart and subgoal pairs
     for (int i = 0; i < MAX_THREADS; i++) {
-        thread_set_args(i, rrt->max_iter, rrt->step_size, &args[i], renderArea, rrt->obstacles);
+        thread_set_args(i, rrt->max_iter, rrt->step_size, &args[i], rrt->obstacles);
     }
+
+    // start the timer here
+    ctimer_t t;
+    ctimer_start(&t);
 
     // launch threads
     for (int i = 1; i < MAX_THREADS; i++) {
@@ -122,15 +127,19 @@ void MainWindow::on_startButton_clicked()
         pthread_join(threads[i], NULL);
     }
 
+    // stop the timer here
+    ctimer_stop(&t);
+    ctimer_measure(&t);
+    ctimer_print(t, "RRT");
+
     // check if all threads have reached their destinations
     int success = 1;
     for (int i = 0; i < MAX_THREADS; i++) {
         if (args[i].path_found == false) {
             success = 0;
-            break;
-        } else {
-            rrt->nodes.insert(rrt->nodes.end(), args[i].nodes.begin(), args[i].nodes.end());
         }
+        rrt->nodes.insert(rrt->nodes.end(), args[i].nodes.begin(), args[i].nodes.end());
+        qDebug() << "after thread" << i << "number of nodes in rrt is:" << rrt->nodes.size();
     }
     if (success)
         ui->statusBox->setText(tr("Reached Destination!"));

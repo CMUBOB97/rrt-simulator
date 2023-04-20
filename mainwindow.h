@@ -2,19 +2,19 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <cilk/cilk.h>
 #include <pthread.h>
+#include <QDebug>
 #include "renderarea.h"
+#include "ctimer.h"
 #include "rrt.h"
 
-#define MAX_THREADS 2
+#define MAX_THREADS 1
 
 typedef struct {
     float start_x, start_y;
     float goal_x, goal_y;
     int max_iterations, step_size;
     bool path_found;
-    RenderArea *renderer;
     Obstacles *obstacles;
     vector<Node *> nodes;
 } ThreadArgs;

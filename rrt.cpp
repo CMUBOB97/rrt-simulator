@@ -47,7 +47,7 @@ void RRT::modify_start_goal(float start_x, float start_y, float goal_x, float go
 Node* RRT::getRandomNode()
 {
     Node* ret;
-    Vector2f point(drand48() * WORLD_WIDTH, drand48() * WORLD_HEIGHT);
+    Vector2f point(startPos.x() + drand48() * WORLD_WIDTH / MAX_THREADS, startPos.y() + drand48() * WORLD_HEIGHT / MAX_THREADS);
     if (point.x() >= 0 && point.x() <= WORLD_WIDTH && point.y() >= 0 && point.y() <= WORLD_HEIGHT) {
         ret = new Node;
         ret->position = point;
