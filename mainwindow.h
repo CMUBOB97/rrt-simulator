@@ -8,7 +8,7 @@
 #include "ctimer.h"
 #include "rrt.h"
 
-#define MAX_THREADS 1
+#define MAX_THREADS 2
 
 typedef struct {
     float start_x, start_y;

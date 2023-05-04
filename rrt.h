@@ -9,7 +9,7 @@
 using namespace std;
 using namespace Eigen;
 
-#define MAX_THREADS 1
+#define MAX_THREADS 2
 
 struct Node {
     vector<Node *> children;
