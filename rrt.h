@@ -9,12 +9,18 @@
 using namespace std;
 using namespace Eigen;
 
-#define MAX_THREADS 2
-
 struct Node {
     vector<Node *> children;
     Node *parent;
     Vector2f position;
+    float cost;
+    int id;
+    // uint childcount;
+    // ushort[9] children;
+    //assumption is that we only have 4 children at most;
+    //children list;
+    // is float good? Can we make it better?
+    // is short enough?
 };
 
 class RRT
@@ -24,14 +30,16 @@ public:
     void initialize();
     Node* getRandomNode();
     Node* nearest(Vector2f point);
-    int distance(Vector2f &p, Vector2f &q);
+    float distance(Vector2f &p, Vector2f &q);
     Vector2f newConfig(Node *q, Node *qNearest);
     void add(Node *qNearest, Node *qNew);
-    void modify_start_goal(float start_x, float start_y, float goal_x, float goal_y, Obstacles *obs);
+    void update(Node *q);
+    void update_value(Node * cc);
     bool reached();
+    float get_cost(Node* q, Node *qNearest);
     void setStepSize(int step);
     void setMaxIterations(int iter);
-    void deleteNodes(Node *root);
+    void deleteNodes(Node *root, int call);
     Obstacles *obstacles;
     vector<Node *> nodes;
     vector<Node *> path;
