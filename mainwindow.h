@@ -9,6 +9,7 @@
 #include "rrt.h"
 
 #define MAX_THREADS 2
+#define THRESHOLD 30
 
 typedef struct {
     float start_x, start_y;

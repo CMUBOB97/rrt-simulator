@@ -30,69 +30,181 @@ void obstacle_subgoal_points(Obstacles *obs_pointer, std::vector<Vector2f> &subg
             Vector2f p_j_2(obs_pointer->obstacles[j].first.x() - 0.5, obs_pointer->obstacles[j].second.y() + 0.5);
             Vector2f p_j_3(obs_pointer->obstacles[j].second.x() + 0.5, obs_pointer->obstacles[j].first.y() - 0.5);
             Vector2f p_j_4(obs_pointer->obstacles[j].second.x() + 0.5, obs_pointer->obstacles[j].second.y() + 0.5);
-            if(!obs_pointer->isSegmentInObstacle(p_i_1, p_j_1)) {
+            if(p_i_1.x() >= 0 && p_i_1.y() >= 0 && p_j_1.x() >= 0 && p_j_1.y() >= 0 && !obs_pointer->isSegmentInObstacle(p_i_1, p_j_1)) {
                 Vector2f mid1((p_i_1.x() + p_j_1.x()) / 2, (p_i_1.y() + p_j_1.y()) / 2);
-                subgoals.push_back(mid1);
+                bool close = false;
+                for (int k = 0; k < subgoals.size(); k++) {
+                    Vector2f dist = mid1 - subgoals[k];
+                    if (dist.norm() <= THRESHOLD)
+                        close = true;
+                }
+                if(!close)
+                    subgoals.push_back(mid1);
             }
-            if(!obs_pointer->isSegmentInObstacle(p_i_1, p_j_2)) {
+            if(p_i_1.x() >= 0 && p_i_1.y() >= 0 && p_j_2.x() >= 0 && p_j_2.y() <= WORLD_HEIGHT && !obs_pointer->isSegmentInObstacle(p_i_1, p_j_2)) {
                 Vector2f mid2((p_i_1.x() + p_j_2.x()) / 2, (p_i_1.y() + p_j_2.y()) / 2);
-                subgoals.push_back(mid2);
+                bool close = false;
+                for (int k = 0; k < subgoals.size(); k++) {
+                    Vector2f dist = mid2 - subgoals[k];
+                    if (dist.norm() <= THRESHOLD)
+                        close = true;
+                }
+                if(!close)
+                    subgoals.push_back(mid2);
             }
-            if(!obs_pointer->isSegmentInObstacle(p_i_1, p_j_3)) {
+            if(p_i_1.x() >= 0 && p_i_1.y() >= 0 && p_j_3.x() <= WORLD_WIDTH && p_j_3.y() >= 0 && !obs_pointer->isSegmentInObstacle(p_i_1, p_j_3)) {
                 Vector2f mid3((p_i_1.x() + p_j_3.x()) / 2, (p_i_1.y() + p_j_3.y()) / 2);
-                subgoals.push_back(mid3);
+                bool close = false;
+                for (int k = 0; k < subgoals.size(); k++) {
+                    Vector2f dist = mid3 - subgoals[k];
+                    if (dist.norm() <= THRESHOLD)
+                        close = true;
+                }
+                if(!close)
+                    subgoals.push_back(mid3);
             }
-            if(!obs_pointer->isSegmentInObstacle(p_i_1, p_j_4)) {
+            if(p_i_1.x() >= 0 && p_i_1.y() >= 0 && p_j_4.x() <= WORLD_WIDTH && p_j_4.y() <= WORLD_HEIGHT && !obs_pointer->isSegmentInObstacle(p_i_1, p_j_4)) {
                 Vector2f mid4((p_i_1.x() + p_j_4.x()) / 2, (p_i_1.y() + p_j_4.y()) / 2);
-                subgoals.push_back(mid4);
+                bool close = false;
+                for (int k = 0; k < subgoals.size(); k++) {
+                    Vector2f dist = mid4 - subgoals[k];
+                    if (dist.norm() <= THRESHOLD)
+                        close = true;
+                }
+                if(!close)
+                    subgoals.push_back(mid4);
             }
-            if(!obs_pointer->isSegmentInObstacle(p_i_2, p_j_1)) {
+            if(p_i_2.x() >= 0 && p_i_2.y() <= WORLD_HEIGHT && p_j_1.x() >= 0 && p_j_1.y() >= 0 && !obs_pointer->isSegmentInObstacle(p_i_2, p_j_1)) {
                 Vector2f mid5((p_i_2.x() + p_j_1.x()) / 2, (p_i_2.y() + p_j_1.y()) / 2);
-                subgoals.push_back(mid5);
+                bool close = false;
+                for (int k = 0; k < subgoals.size(); k++) {
+                    Vector2f dist = mid5 - subgoals[k];
+                    if (dist.norm() <= THRESHOLD)
+                        close = true;
+                }
+                if(!close)
+                    subgoals.push_back(mid5);
             }
-            if(!obs_pointer->isSegmentInObstacle(p_i_2, p_j_2)) {
+            if(p_i_2.x() >= 0 && p_i_2.y() <= WORLD_HEIGHT && p_j_2.x() >= 0 && p_j_2.y() <= WORLD_HEIGHT && !obs_pointer->isSegmentInObstacle(p_i_2, p_j_2)) {
                 Vector2f mid6((p_i_2.x() + p_j_2.x()) / 2, (p_i_2.y() + p_j_2.y()) / 2);
-                subgoals.push_back(mid6);
+                bool close = false;
+                for (int k = 0; k < subgoals.size(); k++) {
+                    Vector2f dist = mid6 - subgoals[k];
+                    if (dist.norm() <= THRESHOLD)
+                        close = true;
+                }
+                if(!close)
+                    subgoals.push_back(mid6);
             }
-            if(!obs_pointer->isSegmentInObstacle(p_i_2, p_j_3)) {
+            if(p_i_2.x() >= 0 && p_i_2.y() <= WORLD_HEIGHT && p_j_3.x() <= WORLD_WIDTH && p_j_3.y() >= 0 && !obs_pointer->isSegmentInObstacle(p_i_2, p_j_3)) {
                 Vector2f mid7((p_i_2.x() + p_j_3.x()) / 2, (p_i_2.y() + p_j_3.y()) / 2);
-                subgoals.push_back(mid7);
+                bool close = false;
+                for (int k = 0; k < subgoals.size(); k++) {
+                    Vector2f dist = mid7 - subgoals[k];
+                    if (dist.norm() <= THRESHOLD)
+                        close = true;
+                }
+                if(!close)
+                    subgoals.push_back(mid7);
             }
-            if(!obs_pointer->isSegmentInObstacle(p_i_2, p_j_4)) {
+            if(p_i_2.x() >= 0 && p_i_2.y() <= WORLD_HEIGHT && p_j_4.x() <= WORLD_WIDTH && p_j_4.y() <= WORLD_HEIGHT && !obs_pointer->isSegmentInObstacle(p_i_2, p_j_4)) {
                 Vector2f mid8((p_i_2.x() + p_j_4.x()) / 2, (p_i_2.y() + p_j_4.y()) / 2);
-                subgoals.push_back(mid8);
+                bool close = false;
+                for (int k = 0; k < subgoals.size(); k++) {
+                    Vector2f dist = mid8 - subgoals[k];
+                    if (dist.norm() <= THRESHOLD)
+                        close = true;
+                }
+                if(!close)
+                    subgoals.push_back(mid8);
             }
-            if(!obs_pointer->isSegmentInObstacle(p_i_3, p_j_1)) {
+            if(p_i_3.x() <= WORLD_WIDTH && p_i_3.y() >= 0 && p_j_1.x() >= 0 && p_j_1.y() >= 0 && !obs_pointer->isSegmentInObstacle(p_i_3, p_j_1)) {
                 Vector2f mid9((p_i_3.x() + p_j_1.x()) / 2, (p_i_3.y() + p_j_1.y()) / 2);
-                subgoals.push_back(mid9);
+                bool close = false;
+                for (int k = 0; k < subgoals.size(); k++) {
+                    Vector2f dist = mid9 - subgoals[k];
+                    if (dist.norm() <= THRESHOLD)
+                        close = true;
+                }
+                if(!close)
+                    subgoals.push_back(mid9);
             }
-            if(!obs_pointer->isSegmentInObstacle(p_i_3, p_j_2)) {
+            if(p_i_3.x() <= WORLD_WIDTH && p_i_3.y() >= 0 && p_j_2.x() >= 0 && p_j_2.y() <= WORLD_HEIGHT && !obs_pointer->isSegmentInObstacle(p_i_3, p_j_2)) {
                 Vector2f mid10((p_i_3.x() + p_j_2.x()) / 2, (p_i_3.y() + p_j_2.y()) / 2);
-                subgoals.push_back(mid10);
+                bool close = false;
+                for (int k = 0; k < subgoals.size(); k++) {
+                    Vector2f dist = mid10 - subgoals[k];
+                    if (dist.norm() <= THRESHOLD)
+                        close = true;
+                }
+                if(!close)
+                    subgoals.push_back(mid10);
             }
-            if(!obs_pointer->isSegmentInObstacle(p_i_3, p_j_3)) {
+            if(p_i_3.x() <= WORLD_WIDTH && p_i_3.y() >= 0 && p_j_3.x() <= WORLD_WIDTH && p_j_3.y() >= 0 && !obs_pointer->isSegmentInObstacle(p_i_3, p_j_3)) {
                 Vector2f mid11((p_i_3.x() + p_j_3.x()) / 2, (p_i_3.y() + p_j_3.y()) / 2);
-                subgoals.push_back(mid11);
+                bool close = false;
+                for (int k = 0; k < subgoals.size(); k++) {
+                    Vector2f dist = mid11 - subgoals[k];
+                    if (dist.norm() <= THRESHOLD)
+                        close = true;
+                }
+                if(!close)
+                    subgoals.push_back(mid11);
             }
-            if(!obs_pointer->isSegmentInObstacle(p_i_3, p_j_4)) {
+            if(p_i_3.x() <= WORLD_WIDTH && p_i_3.y() >= 0 && p_j_4.x() <= WORLD_WIDTH && p_j_4.y() <= WORLD_HEIGHT && !obs_pointer->isSegmentInObstacle(p_i_3, p_j_4)) {
                 Vector2f mid12((p_i_3.x() + p_j_4.x()) / 2, (p_i_3.y() + p_j_4.y()) / 2);
-                subgoals.push_back(mid12);
+                bool close = false;
+                for (int k = 0; k < subgoals.size(); k++) {
+                    Vector2f dist = mid12 - subgoals[k];
+                    if (dist.norm() <= THRESHOLD)
+                        close = true;
+                }
+                if(!close)
+                    subgoals.push_back(mid12);
             }
-            if(!obs_pointer->isSegmentInObstacle(p_i_4, p_j_1)) {
+            if(p_i_4.x() <= WORLD_WIDTH && p_i_4.y() <= WORLD_HEIGHT && p_j_1.x() >= 0 && p_j_1.y() >= 0 && !obs_pointer->isSegmentInObstacle(p_i_4, p_j_1)) {
                 Vector2f mid13((p_i_4.x() + p_j_1.x()) / 2, (p_i_4.y() + p_j_1.y()) / 2);
-                subgoals.push_back(mid13);
+                bool close = false;
+                for (int k = 0; k < subgoals.size(); k++) {
+                    Vector2f dist = mid13 - subgoals[k];
+                    if (dist.norm() <= THRESHOLD)
+                        close = true;
+                }
+                if(!close)
+                    subgoals.push_back(mid13);
             }
-            if(!obs_pointer->isSegmentInObstacle(p_i_4, p_j_2)) {
+            if(p_i_4.x() <= WORLD_WIDTH && p_i_4.y() <= WORLD_HEIGHT && p_j_2.x() >= 0 && p_j_2.y() <= WORLD_HEIGHT && !obs_pointer->isSegmentInObstacle(p_i_4, p_j_2)) {
                 Vector2f mid14((p_i_4.x() + p_j_2.x()) / 2, (p_i_4.y() + p_j_2.y()) / 2);
-                subgoals.push_back(mid14);
+                bool close = false;
+                for (int k = 0; k < subgoals.size(); k++) {
+                    Vector2f dist = mid14 - subgoals[k];
+                    if (dist.norm() <= THRESHOLD)
+                        close = true;
+                }
+                if(!close)
+                    subgoals.push_back(mid14);
             }
-            if(!obs_pointer->isSegmentInObstacle(p_i_4, p_j_3)) {
+            if(p_i_4.x() <= WORLD_WIDTH && p_i_4.y() <= WORLD_HEIGHT && p_j_3.x() <= WORLD_WIDTH && p_j_3.y() >= 0 && !obs_pointer->isSegmentInObstacle(p_i_4, p_j_3)) {
                 Vector2f mid15((p_i_4.x() + p_j_3.x()) / 2, (p_i_4.y() + p_j_3.y()) / 2);
-                subgoals.push_back(mid15);
+                bool close = false;
+                for (int k = 0; k < subgoals.size(); k++) {
+                    Vector2f dist = mid15 - subgoals[k];
+                    if (dist.norm() <= THRESHOLD)
+                        close = true;
+                }
+                if(!close)
+                    subgoals.push_back(mid15);
             }
-            if(!obs_pointer->isSegmentInObstacle(p_i_4, p_j_4)) {
+            if(p_i_4.x() <= WORLD_WIDTH && p_i_4.y() <= WORLD_HEIGHT && p_j_4.x() <= WORLD_WIDTH && p_j_4.y() <= WORLD_HEIGHT && !obs_pointer->isSegmentInObstacle(p_i_4, p_j_4)) {
                 Vector2f mid16((p_i_4.x() + p_j_4.x()) / 2, (p_i_4.y() + p_j_4.y()) / 2);
-                subgoals.push_back(mid16);
+                bool close = false;
+                for (int k = 0; k < subgoals.size(); k++) {
+                    Vector2f dist = mid16 - subgoals[k];
+                    if (dist.norm() <= THRESHOLD)
+                        close = true;
+                }
+                if(!close)
+                    subgoals.push_back(mid16);
             }
             
         }
@@ -101,8 +213,54 @@ void obstacle_subgoal_points(Obstacles *obs_pointer, std::vector<Vector2f> &subg
 }
 
 // select sub start and goal pairs
-void thread_set_args(int ThreadID, int MaxIter, int StepSize, ThreadArgs *ThreadArg, Obstacles *obs_pointer, std::vector<Vector2f> &subgoals) {
+void thread_set_args(int MaxIter, int StepSize, ThreadArgs *ThreadArg, Obstacles *obs_pointer, std::vector<Vector2f> &subgoals) {
+    // set a vector for visited subgoals
+    std::vector<int> visited(subgoals.size(), 0);
+
+    // single function call for setting all threads
+    for (int i = 0; i < MAX_THREADS; i++) {
+        // setting start and goal
+        if (i == 0) {
+            ThreadArg[i].start_x = START_POS_X;
+            ThreadArg[i].start_y = START_POS_Y;
+        } else {
+            ThreadArg[i].start_x = ThreadArg[i-1].goal_x;
+            ThreadArg[i].start_y = ThreadArg[i-1].goal_y;
+        }
+
+        if (i == MAX_THREADS - 1) {
+            ThreadArg[i].goal_x = END_POS_X;
+            ThreadArg[i].goal_y = END_POS_Y;
+        } else {
+            // choose the best subgoal part
+            float dist_ratio = (i + 1) * 1.0f / (MAX_THREADS * 1.0f);
+            float best_error = -1.f;
+            int best_index = 0;
+            for (int j = 0; j < subgoals.size(); j++) {
+                Vector2f dist_to_start(subgoals[j].x() - START_POS_X, subgoals[j].y() - START_POS_Y);
+                Vector2f dist_to_goal(subgoals[j].x() - END_POS_X, subgoals[j].y() - END_POS_Y);
+                Vector2f substart(ThreadArg[i].start_x, ThreadArg[i].start_y);
+                float current_ratio = dist_to_start.norm() / (dist_to_start.norm() + dist_to_goal.norm());
+                if (visited[j] == 0 && (best_error < 0 || abs(current_ratio - dist_ratio) < best_error)) {
+                    best_error = abs(current_ratio - dist_ratio);
+                    best_index = j;
+                }
+            }
+            // set the index to be visited
+            visited[best_index] = 1;
+            ThreadArg[i].goal_x = subgoals[best_index].x();
+            ThreadArg[i].goal_y = subgoals[best_index].y();
+            qDebug() << "The goal for thread " << i << " is " << ThreadArg[i].goal_x << "," << ThreadArg[i].goal_y;
+        }
+        // set other arguments
+        ThreadArg[i].max_iterations = (int) MaxIter / MAX_THREADS;
+        ThreadArg[i].step_size = StepSize;
+        ThreadArg[i].path_found = false;
+        ThreadArg[i].obstacles = obs_pointer;
+    }
+    
     // when thread id is 0, start is global start
+    /*
     if (ThreadID == 0) {
         ThreadArg->start_x = START_POS_X;
         ThreadArg->start_y = START_POS_Y;
@@ -112,9 +270,9 @@ void thread_set_args(int ThreadID, int MaxIter, int StepSize, ThreadArgs *Thread
             ThreadArg->start_x = (START_POS_X + END_POS_X) * ThreadID / (MAX_THREADS * 1.0f);
             ThreadArg->start_y = (START_POS_Y + END_POS_Y) * ThreadID / (MAX_THREADS * 1.0f);
         } else {
-            qDebug() << "The subgoal point is: " << subgoals[0].x() << "," << subgoals[0].y();
-            ThreadArg->start_x = subgoals[0].x();
-            ThreadArg->start_y = subgoals[0].y();
+            for (int i = 0; i < subgoals.size(); i++) {
+                
+            }
         }
     }
     // when thread id is max_thread-1, goal is global goal
@@ -131,10 +289,7 @@ void thread_set_args(int ThreadID, int MaxIter, int StepSize, ThreadArgs *Thread
             ThreadArg->goal_y = subgoals[0].y();
         }
     }
-    ThreadArg->max_iterations = (int) MaxIter / MAX_THREADS;
-    ThreadArg->step_size = StepSize;
-    ThreadArg->path_found = false;
-    ThreadArg->obstacles = obs_pointer;
+    */
 }
 
 void *thread_start(void *VoidThreadArg) {
@@ -213,9 +368,7 @@ void MainWindow::on_startButton_clicked()
     ThreadArgs args[MAX_THREADS];
 
     // use pthreads to create substart and subgoal pairs
-    for (int i = 0; i < MAX_THREADS; i++) {
-        thread_set_args(i, rrt->max_iter, rrt->step_size, &args[i], rrt->obstacles, subgoals);
-    }
+    thread_set_args(rrt->max_iter, rrt->step_size, args, rrt->obstacles, subgoals);
 
     // start the timer here
     ctimer_t t;
