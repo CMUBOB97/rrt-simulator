@@ -259,37 +259,6 @@ void thread_set_args(int MaxIter, int StepSize, ThreadArgs *ThreadArg, Obstacles
         ThreadArg[i].obstacles = obs_pointer;
     }
     
-    // when thread id is 0, start is global start
-    /*
-    if (ThreadID == 0) {
-        ThreadArg->start_x = START_POS_X;
-        ThreadArg->start_y = START_POS_Y;
-    } else {
-        if (subgoals.size() == 0) {
-            qDebug() << "Something is wrong with my subgoal calculation";
-            ThreadArg->start_x = (START_POS_X + END_POS_X) * ThreadID / (MAX_THREADS * 1.0f);
-            ThreadArg->start_y = (START_POS_Y + END_POS_Y) * ThreadID / (MAX_THREADS * 1.0f);
-        } else {
-            for (int i = 0; i < subgoals.size(); i++) {
-                
-            }
-        }
-    }
-    // when thread id is max_thread-1, goal is global goal
-    if (ThreadID == MAX_THREADS - 1) {
-        ThreadArg->goal_x = END_POS_X;
-        ThreadArg->goal_y = END_POS_Y;
-    } else {
-        if (subgoals.size() == 0) {
-            qDebug() << "Something is wrong with my subgoal calculation";
-            ThreadArg->goal_x = (START_POS_X + END_POS_X) * (ThreadID + 1) / (MAX_THREADS * 1.0f);
-            ThreadArg->goal_y = (START_POS_Y + END_POS_Y) * (ThreadID + 1) / (MAX_THREADS * 1.0f);
-        } else {
-            ThreadArg->goal_x = subgoals[0].x();
-            ThreadArg->goal_y = subgoals[0].y();
-        }
-    }
-    */
 }
 
 void *thread_start(void *VoidThreadArg) {
@@ -297,6 +266,8 @@ void *thread_start(void *VoidThreadArg) {
     // first, each thread creates its own subtree
     ThreadArgs *ThreadArg = (ThreadArgs *)VoidThreadArg;
     RRT thread_rrt = RRT();
+    ctimer_t update, collision;
+    float update_time = 0.0f, collision_time = 0.0f;
     thread_rrt.modify_start_goal(ThreadArg->start_x, ThreadArg->start_y,
                                  ThreadArg->goal_x, ThreadArg->goal_y, ThreadArg->obstacles);
     thread_rrt.initialize();
@@ -305,10 +276,18 @@ void *thread_start(void *VoidThreadArg) {
     for(int i = 0; i < ThreadArg->max_iterations;) {
         Node *q = thread_rrt.getRandomNode();
         if (q) {
+            ctimer_start(&update);
             Node *qNearest = thread_rrt.nearest(q->position);
+            ctimer_stop(&update);
+            ctimer_measure(&update);
+            update_time += timespec_sec(update.elapsed);
             if (thread_rrt.distance(q->position, qNearest->position) > thread_rrt.step_size) {
                 Vector2f newConfig = thread_rrt.newConfig(q, qNearest);
+                ctimer_start(&collision);
                 if (!thread_rrt.obstacles->isSegmentInObstacle(newConfig, qNearest->position)) {
+                    ctimer_stop(&collision);
+                    ctimer_measure(&collision);
+                    collision_time += timespec_sec(collision.elapsed);
                     Node *qNew = new Node;
                     qNew->position = newConfig;
                     thread_rrt.add(qNearest, qNew);
@@ -317,6 +296,8 @@ void *thread_start(void *VoidThreadArg) {
             }
         }
         if (thread_rrt.reached()) {
+            qDebug() << "tree iteration time: " <<update_time;
+            qDebug() << "tree collision time: " <<collision_time;
             ThreadArg->path_found = true;
             break;
         }
